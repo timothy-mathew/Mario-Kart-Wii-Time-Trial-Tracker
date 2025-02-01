@@ -33,22 +33,32 @@ const Dashboard = () => {
 
   const handleSubmit = async (formData) => {
     try {
+      console.log('Submitting time trial:', formData); // Debug log
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/timetrials`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          trackName: formData.trackName,
+          timeInMs: formData.timeInMs,
+          character: formData.character,
+          vehicle: formData.vehicle,
+          date: formData.date
+        }),
       });
 
-      if (!response.ok) throw new Error('Failed to add time trial');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to add time trial');
+      }
       
       showAlert('Time trial added successfully!', 'success');
       fetchTimeTrials();
     } catch (error) {
       console.error('Error adding time trial:', error);
-      showAlert('Failed to add time trial', 'error');
+      showAlert('Failed to add time trial: ' + error.message, 'error');
     }
   };
 
@@ -61,13 +71,16 @@ const Dashboard = () => {
         },
       });
 
-      if (!response.ok) throw new Error('Failed to delete time trial');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to delete time trial');
+      }
       
       showAlert('Time trial deleted successfully!', 'success');
       fetchTimeTrials();
     } catch (error) {
       console.error('Error deleting time trial:', error);
-      showAlert('Failed to delete time trial', 'error');
+      showAlert('Failed to delete time trial: ' + error.message, 'error');
     }
   };
 

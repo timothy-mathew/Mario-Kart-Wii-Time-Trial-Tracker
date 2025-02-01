@@ -10,6 +10,7 @@ import {
   Typography
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { millisecondsToTime } from '../utils/timeUtils';
 
 const TimeTrialsList = ({ timeTrials, onDelete }) => {
   return (
@@ -36,7 +37,7 @@ const TimeTrialsList = ({ timeTrials, onDelete }) => {
             timeTrials.map((trial) => (
               <TableRow key={trial._id}>
                 <TableCell>{trial.trackName}</TableCell>
-                <TableCell>{trial.time}</TableCell>
+                <TableCell>{trial.formattedTime || millisecondsToTime(trial.timeInMs)}</TableCell>
                 <TableCell>{trial.character}</TableCell>
                 <TableCell>{trial.vehicle}</TableCell>
                 <TableCell>

@@ -17,7 +17,7 @@ exports.createTimeTrial = async (req, res) => {
     const timeTrial = new TimeTrial({
       userId: req.userId,
       trackName: req.body.trackName,
-      time: req.body.time,
+      timeInMs: req.body.timeInMs,
       character: req.body.character,
       vehicle: req.body.vehicle,
       date: req.body.date || new Date()
@@ -26,6 +26,7 @@ exports.createTimeTrial = async (req, res) => {
     const newTimeTrial = await timeTrial.save();
     res.status(201).json(newTimeTrial);
   } catch (error) {
+    console.error('Error creating time trial:', error);
     res.status(400).json({ message: error.message });
   }
 };
@@ -33,7 +34,7 @@ exports.createTimeTrial = async (req, res) => {
 // Delete a time trial
 exports.deleteTimeTrial = async (req, res) => {
   try {
-    const timeTrial = await TimeTrial.findOne({ 
+    const timeTrial = await TimeTrial.findOneAndDelete({ 
       _id: req.params.id,
       userId: req.userId 
     });
@@ -42,7 +43,6 @@ exports.deleteTimeTrial = async (req, res) => {
       return res.status(404).json({ message: 'Time trial not found' });
     }
 
-    await timeTrial.remove();
     res.json({ message: 'Time trial deleted' });
   } catch (error) {
     res.status(500).json({ message: error.message });
