@@ -1,12 +1,13 @@
-import { Box, Typography, Container, Alert } from '@mui/material';
-import { GoogleLogin } from '@react-oauth/google';
-import { useAuth } from '../contexts/AuthContext';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { Box, Typography, Paper, Alert } from '@mui/material';
+import { GoogleLogin } from '@react-oauth/google';
+import SportsScoreIcon from '@mui/icons-material/SportsScore';
 
 const Login = () => {
-  const { login } = useAuth();
   const [error, setError] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSuccess = async (credentialResponse) => {
@@ -31,10 +32,7 @@ const Login = () => {
 
       const data = await response.json();
       login(data.user);
-      
-      // Navigate to dashboard after successful login
       navigate('/');
-      
     } catch (error) {
       console.error('Login error:', error);
       setError(error.message || 'Failed to login');
@@ -47,31 +45,70 @@ const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
+    <Box
+      sx={{
+        minHeight: 'calc(100vh - 64px)', // Subtract navbar height
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        p: 3,
+      }}
+    >
+      <Paper
+        elevation={3}
         sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          p: 4,
+          maxWidth: 400,
+          width: '100%',
+          textAlign: 'center',
+          borderRadius: 3,
         }}
       >
-        <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
-          Welcome to MKWii Time Trials
-        </Typography>
-        
+        <Box sx={{ mb: 4 }}>
+          <SportsScoreIcon
+            sx={{
+              fontSize: 64,
+              color: 'primary.main',
+              mb: 2
+            }}
+          />
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{
+              fontWeight: 700,
+              background: 'linear-gradient(45deg, #2596be 30%, #abdbe3 70%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Ready to Race?
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+            Sign in to track your Mario Kart Wii time trials!
+          </Typography>
+        </Box>
+
         {error && (
-          <Alert severity="error" sx={{ mb: 2, width: '100%' }}>
+          <Alert severity="error" sx={{ mb: 3 }}>
             {error}
           </Alert>
         )}
 
-        <GoogleLogin
-          onSuccess={handleSuccess}
-          onError={handleError}
-        />
-      </Box>
-    </Container>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={handleError}
+            theme="filled_blue"
+            shape="pill"
+            size="large"
+            text="continue_with"
+            useOneTap
+          />
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

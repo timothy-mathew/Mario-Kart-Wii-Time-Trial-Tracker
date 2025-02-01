@@ -8,7 +8,8 @@ import {
   Select,
   MenuItem,
   Alert,
-  Grid
+  Grid,
+  Paper
 } from '@mui/material';
 import { timeToMilliseconds, isValidTimeFormat } from '../utils/timeUtils';
 
@@ -144,104 +145,115 @@ const TimeTrialForm = ({ onSubmit }) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-      
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel>Track</InputLabel>
-            <Select
-              name="trackName"
-              value={formData.trackName}
-              onChange={handleChange}
-              required
-              label="Track"
-            >
-              {TRACKS.map(track => (
-                <MenuItem key={track} value={track}>{track}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+    <Paper 
+      elevation={0}
+      sx={{ 
+        p: 3, 
+        mb: 4, 
+        borderRadius: 3,
+        backgroundColor: '#13152C',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.5)'
+      }}
+    >
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
         
-        <Grid item xs={12}>
-          <TextField
-            name="time"
-            label="Time (MM:SS.mmm)"
-            value={formData.time}
-            onChange={handleChange}
-            required
-            placeholder="01:23.456"
-            sx={{ width: '200px' }}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel>Character</InputLabel>
-            <Select
-              name="character"
-              value={formData.character}
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel>Track</InputLabel>
+              <Select
+                name="trackName"
+                value={formData.trackName}
+                onChange={handleChange}
+                required
+                label="Track"
+              >
+                {TRACKS.map(track => (
+                  <MenuItem key={track} value={track}>{track}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          
+          <Grid item xs={12}>
+            <TextField
+              name="time"
+              label="Time (MM:SS.mmm)"
+              value={formData.time}
               onChange={handleChange}
               required
-              label="Character"
-            >
-              {CHARACTERS.map(char => (
-                <MenuItem key={char} value={char}>{char}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+              placeholder="01:23.456"
+              sx={{ width: '200px' }}
+            />
+          </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel>Vehicle</InputLabel>
-            <Select
-              name="vehicle"
-              value={formData.vehicle}
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Character</InputLabel>
+              <Select
+                name="character"
+                value={formData.character}
+                onChange={handleChange}
+                required
+                label="Character"
+              >
+                {CHARACTERS.map(char => (
+                  <MenuItem key={char} value={char}>{char}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Vehicle</InputLabel>
+              <Select
+                name="vehicle"
+                value={formData.vehicle}
+                onChange={handleChange}
+                required
+                label="Vehicle"
+              >
+                {VEHICLES.map(vehicle => (
+                  <MenuItem key={vehicle} value={vehicle}>{vehicle}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              name="date"
+              label="Date"
+              type="date"
+              value={formData.date}
               onChange={handleChange}
               required
-              label="Vehicle"
+              sx={{ width: '200px' }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ minWidth: '120px' }}
             >
-              {VEHICLES.map(vehicle => (
-                <MenuItem key={vehicle} value={vehicle}>{vehicle}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              Add Time
+            </Button>
+          </Grid>
         </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            name="date"
-            label="Date"
-            type="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-            sx={{ width: '200px' }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ minWidth: '120px' }}
-          >
-            Add Time
-          </Button>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </Paper>
   );
 };
 

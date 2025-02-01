@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Container, Typography, Alert, Snackbar } from '@mui/material';
+import { Container, Typography, Alert, Snackbar, Box } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import TimeTrialForm from './TimeTrialForm';
 import TimeTrialsList from './TimeTrialsList';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -33,7 +34,7 @@ const Dashboard = () => {
 
   const handleSubmit = async (formData) => {
     try {
-      console.log('Submitting time trial:', formData); // Debug log
+      console.log('Submitting time trial:', formData);
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/timetrials`, {
         method: 'POST',
         headers: {
@@ -94,9 +95,26 @@ const Dashboard = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Your Time Trials
-      </Typography>
+      <Box sx={{ mb: 4, textAlign: 'center' }}>
+        <EmojiEventsIcon 
+          sx={{ 
+            fontSize: 48, 
+            color: 'primary.main',
+            mb: 2
+          }} 
+        />
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          gutterBottom
+          sx={{
+            fontWeight: 700,
+            color: 'text.primary'
+          }}
+        >
+          Your Time Trials
+        </Typography>
+      </Box>
       
       <TimeTrialForm onSubmit={handleSubmit} />
       <TimeTrialsList timeTrials={timeTrials} onDelete={handleDelete} />
@@ -107,7 +125,12 @@ const Dashboard = () => {
         onClose={handleCloseAlert}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert onClose={handleCloseAlert} severity={alert.severity}>
+        <Alert 
+          onClose={handleCloseAlert} 
+          severity={alert.severity}
+          elevation={6}
+          variant="filled"
+        >
           {alert.message}
         </Alert>
       </Snackbar>
