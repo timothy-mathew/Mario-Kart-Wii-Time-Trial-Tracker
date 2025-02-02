@@ -68,7 +68,7 @@ const Login = () => {
           <SportsScoreIcon
             sx={{
               fontSize: 64,
-              color: 'primary.main',
+              color: 'text.secondary',
               mb: 2
             }}
           />
