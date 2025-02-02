@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TimerIcon from '@mui/icons-material/Timer';
-import { millisecondsToTime } from '../utils/timeUtils';
+import { millisecondsToTime, formatDate } from '../utils/timeUtils';
 
 const TimeTrialsList = ({ timeTrials, onDelete }) => {
   return (
@@ -78,7 +78,7 @@ const TimeTrialsList = ({ timeTrials, onDelete }) => {
                 <TableCell>{trial.character}</TableCell>
                 <TableCell>{trial.vehicle}</TableCell>
                 <TableCell>
-                  {new Date(trial.date).toLocaleDateString()}
+                  {formatDate(trial.date)}
                 </TableCell>
                 <TableCell align="center">
                   <IconButton

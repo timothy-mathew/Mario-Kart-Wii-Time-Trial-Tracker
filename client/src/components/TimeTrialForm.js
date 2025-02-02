@@ -131,7 +131,7 @@ const TimeTrialForm = ({ onSubmit }) => {
     onSubmit({
       ...formData,
       timeInMs,
-      date: new Date(formData.date)
+      date: new Date(formData.date).toISOString().split('T')[0]
     });
 
     // Clear form

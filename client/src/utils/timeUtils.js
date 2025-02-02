@@ -24,3 +24,9 @@ export const isValidTimeFormat = (timeString) => {
   const regex = /^[0-9]{2}:[0-5][0-9]\.[0-9]{3}$/;
   return regex.test(timeString);
 };
+
+export const formatDate = (dateString) => {
+  const date = dateString.split('T')[0];  
+  const [year, month, day] = date.split('-');
+  return `${month}/${day}/${year%100}`;
+};
