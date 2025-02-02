@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   TextField,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
+  InputAdornment,
+  Typography,
   Alert,
-  Grid,
-  Paper
 } from '@mui/material';
-import { timeToMilliseconds, isValidTimeFormat } from '../utils/timeUtils';
+import MapIcon from '@mui/icons-material/Map';
+import TimerIcon from '@mui/icons-material/Timer';
+import PersonIcon from '@mui/icons-material/Person';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { isValidTimeFormat, timeToMilliseconds } from '../utils/timeUtils';
 
 const TRACKS = [
   "Luigi Circuit",
@@ -97,163 +99,173 @@ const VEHICLES = [
   "Phantom"
 ];
 
-const TimeTrialForm = ({ onSubmit }) => {
+const TimeTrialForm = ({ onSubmit, onCancel, initialData, isEditing }) => {
   const [formData, setFormData] = useState({
     trackName: '',
-    time: '',
+    formattedTime: '',
     character: '',
     vehicle: '',
-    date: new Date().toISOString().split('T')[0] // Set default to today's date
+    date: new Date().toISOString().split('T')[0],
   });
+
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        trackName: initialData.trackName || '',
+        formattedTime: initialData.formattedTime || '',
+        character: initialData.character || '',
+        vehicle: initialData.vehicle || '',
+        date: initialData.date ? initialData.date.split('T')[0] : new Date().toISOString().split('T')[0],
+      });
+    }
+  }, [initialData]);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
     setError('');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validate time format
-    if (!isValidTimeFormat(formData.time)) {
+
+    if (!isValidTimeFormat(formData.formattedTime)) {
       setError('Time must be in format MM:SS.mmm (e.g., 01:23.456)');
       return;
     }
 
     // Convert time to milliseconds before submitting
-    const timeInMs = timeToMilliseconds(formData.time);
-    
+    const timeInMs = timeToMilliseconds(formData.formattedTime);
     onSubmit({
       ...formData,
-      timeInMs,
-      date: new Date(formData.date).toISOString().split('T')[0]
-    });
-
-    // Clear form
-    setFormData({
-      trackName: '',
-      time: '',
-      character: '',
-      vehicle: '',
-      date: new Date().toISOString().split('T')[0]
+      timeInMs
     });
   };
 
   return (
-    <Paper 
-      elevation={0}
-      sx={{ 
-        p: 3, 
-        mb: 4, 
-        borderRadius: 3,
-        backgroundColor: '#13152C',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.5)'
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        p: 3,
+        backgroundColor: 'background.paper',
       }}
     >
-      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
+      <Typography variant="h6" gutterBottom>
+        {isEditing ? 'Edit Time Trial' : 'Add Time Trial'}
+      </Typography>
+
+      {error && <Alert severity="error">{error}</Alert>}
+
+      <TextField
+        label="Track"
+        name="trackName"
+        value={formData.trackName}
+        onChange={handleChange}
+        required
+        select
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <MapIcon />
+            </InputAdornment>
+          ),
+        }}
+      >
+        {TRACKS.map(track => (
+          <MenuItem key={track} value={track}>{track}</MenuItem>
+        ))}
+      </TextField>
+
+      <TextField
+        label="Time (MM:SS.mmm)"
+        name="formattedTime"
+        value={formData.formattedTime}
+        onChange={handleChange}
+        required
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <TimerIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      <TextField
+        label="Character"
+        name="character"
+        value={formData.character}
+        onChange={handleChange}
+        required
+        select
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <PersonIcon />
+            </InputAdornment>
+          ),
+        }}
+      >
+        {CHARACTERS.map(char => (
+          <MenuItem key={char} value={char}>{char}</MenuItem>
+        ))}
+      </TextField>
+
+      <TextField
+        label="Vehicle"
+        name="vehicle"
+        value={formData.vehicle}
+        onChange={handleChange}
+        required
+        select
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <DirectionsCarIcon />
+            </InputAdornment>
+          ),
+        }}
+      >
+        {VEHICLES.map(vehicle => (
+          <MenuItem key={vehicle} value={vehicle}>{vehicle}</MenuItem>
+        ))}
+      </TextField>
+
+      <TextField
+        label="Date"
+        name="date"
+        type="date"
+        value={formData.date}
+        onChange={handleChange}
+        required
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <CalendarTodayIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 2 }}>
+        {onCancel && (
+          <Button onClick={onCancel} variant="outlined" color="inherit">
+            Cancel
+          </Button>
         )}
-        
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel>Track</InputLabel>
-              <Select
-                name="trackName"
-                value={formData.trackName}
-                onChange={handleChange}
-                required
-                label="Track"
-              >
-                {TRACKS.map(track => (
-                  <MenuItem key={track} value={track}>{track}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          
-          <Grid item xs={12}>
-            <TextField
-              name="time"
-              label="Time (MM:SS.mmm)"
-              value={formData.time}
-              onChange={handleChange}
-              required
-              placeholder="01:23.456"
-              sx={{ width: '200px' }}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Character</InputLabel>
-              <Select
-                name="character"
-                value={formData.character}
-                onChange={handleChange}
-                required
-                label="Character"
-              >
-                {CHARACTERS.map(char => (
-                  <MenuItem key={char} value={char}>{char}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Vehicle</InputLabel>
-              <Select
-                name="vehicle"
-                value={formData.vehicle}
-                onChange={handleChange}
-                required
-                label="Vehicle"
-              >
-                {VEHICLES.map(vehicle => (
-                  <MenuItem key={vehicle} value={vehicle}>{vehicle}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              name="date"
-              label="Date"
-              type="date"
-              value={formData.date}
-              onChange={handleChange}
-              required
-              sx={{ width: '200px' }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{ minWidth: '120px' }}
-            >
-              Add Time
-            </Button>
-          </Grid>
-        </Grid>
+        <Button type="submit" variant="contained" color="primary">
+          {isEditing ? 'Save Changes' : 'Add Time Trial'}
+        </Button>
       </Box>
-    </Paper>
+    </Box>
   );
 };
 
