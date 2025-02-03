@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Container, Box, Button, Dialog, Snackbar, Alert, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TimeTrialForm from './TimeTrialForm';
@@ -12,17 +12,19 @@ const Dashboard = () => {
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const { user } = useAuth();
 
-  useEffect(() => {
-    if (user) {
-      fetchTimeTrials();
-    }
-  }, [user]);
+  const showAlert = useCallback((message, severity) => {
+    setAlert({ open: true, message, severity });
+  }, []);
 
-  const fetchTimeTrials = async () => {
+  const handleCloseAlert = useCallback(() => {
+    setAlert(prev => ({ ...prev, open: false }));
+  }, []);
+
+  const fetchTimeTrials = useCallback(async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/timetrials`, {
         headers: {
-          'Authorization': `Bearer ${user.token}`,
+          'Authorization': `Bearer ${user?.token}`,
         },
       });
       if (!response.ok) {
@@ -34,7 +36,13 @@ const Dashboard = () => {
       console.error('Error fetching time trials:', error);
       showAlert('Failed to fetch time trials', 'error');
     }
-  };
+  }, [user, showAlert]);
+
+  useEffect(() => {
+    if (user) {
+      fetchTimeTrials();
+    }
+  }, [user, fetchTimeTrials]);
 
   const handleSubmit = async (formData) => {
     try {
@@ -109,14 +117,6 @@ const Dashboard = () => {
       console.error('Error updating time trial:', error);
       showAlert('Failed to update time trial: ' + error.message, 'error');
     }
-  };
-
-  const showAlert = (message, severity) => {
-    setAlert({ open: true, message, severity });
-  };
-
-  const handleCloseAlert = () => {
-    setAlert({ ...alert, open: false });
   };
 
   return (
