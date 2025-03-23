@@ -16,6 +16,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { isValidTimeFormat, timeToMilliseconds } from '../utils/timeUtils';
 
 const TRACKS = [
+  // Nitro Tracks (New Tracks)
   "Luigi Circuit",
   "Moo Moo Meadows",
   "Mushroom Gorge",
@@ -31,7 +32,25 @@ const TRACKS = [
   "Dry Dry Ruins",
   "Moonview Highway",
   "Bowser's Castle",
-  "Rainbow Road"
+  "Rainbow Road",
+  
+  // Retro Tracks
+  "GCN Peach Beach",
+  "DS Yoshi Falls",
+  "SNES Ghost Valley 2",
+  "N64 Mario Raceway",
+  "N64 Sherbet Land",
+  "GBA Shy Guy Beach",
+  "DS Delfino Square",
+  "GCN Waluigi Stadium",
+  "DS Desert Hills",
+  "GBA Bowser Castle 3",
+  "N64 DK's Jungle Parkway",
+  "GCN Mario Circuit",
+  "SNES Mario Circuit 3",
+  "DS Peach Gardens",
+  "GCN DK Mountain",
+  "N64 Bowser's Castle"
 ];
 
 const CHARACTERS = [
