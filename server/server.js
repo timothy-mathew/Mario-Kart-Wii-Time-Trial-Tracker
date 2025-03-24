@@ -11,13 +11,28 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+// Update the CORS configuration to allow both local and Vercel domains
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://mkwii-time-trialer.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB Atlas'))
   .catch((error) => console.error('MongoDB connection error:', error));
+
+// Update the preflight request handler
+app.options('/api/auth/google', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'https://mkwii-time-trialer.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.status(200).json({});
+});
+
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
