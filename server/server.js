@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch((error) => console.error('MongoDB connection error:', error));
 
 // Update the preflight request handler
-app.options('/api/auth/google', (req, res) => {
+app.options('/api/:path*', (req, res) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization');

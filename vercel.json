@@ -1,8 +1,14 @@
 {
-    "rewrites": [
-      {
-        "source": "/api/:path*",
-        "destination": "https://mkwii-time-trialer.vercel.app/api/:path*"
-      }
-    ]
-  }
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/:path*",
+      "dest": "/api/:path*"
+    }
+  ]
+}
