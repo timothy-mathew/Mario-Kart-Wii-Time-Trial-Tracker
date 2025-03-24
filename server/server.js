@@ -38,6 +38,17 @@ app.options('/api/:path*', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/timetrials', require('./routes/timeTrials'));
 
+
+
+app.get("/api/test-db", async (req, res) => {
+  try {
+    await mongoose.connection.db.admin().ping();
+    res.json({ message: "MongoDB is connected!" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Basic route for testing
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Server is running!' });

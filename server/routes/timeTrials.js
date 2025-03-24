@@ -8,16 +8,6 @@ const {
 } = require('../controllers/timeTrialController');
 
 
-router.get("/test-db", async (req, res) => {
-  try {
-    await mongoose.connection.db.admin().ping();
-    res.json({ message: "MongoDB is connected!" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-
 // All routes require authentication
 router.use(auth);
 
