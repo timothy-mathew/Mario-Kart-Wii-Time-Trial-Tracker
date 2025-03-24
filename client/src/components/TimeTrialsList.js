@@ -129,7 +129,7 @@ const TimeTrialsList = ({ timeTrials, onDelete, onUpdate }) => {
                       color="primary" 
                       size="small"
                       sx={{ 
-                        color: 'primary.light',
+                        color: 'rgba(158, 158, 158, 1)',
                         '&:hover': {
                           backgroundColor: 'rgba(144, 202, 249, 0.08)'
                         }
