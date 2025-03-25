@@ -54,6 +54,8 @@ const TRACKS = [
 ];
 
 const CHARACTERS = [
+  "Funky Kong",
+  "Daisy",
   "Mario",
   "Luigi",
   "Peach",
@@ -64,7 +66,6 @@ const CHARACTERS = [
   "Waluigi",
   "Toad",
   "Koopa Troopa",
-  "Daisy",
   "Baby Mario",
   "Baby Luigi",
   "Baby Peach",
@@ -74,12 +75,13 @@ const CHARACTERS = [
   "King Boo",
   "Bowser Jr.",
   "Dry Bones",
-  "Funky Kong",
   "Dry Bowser",
   "Rosalina"
 ];
 
 const VEHICLES = [
+  "Flame Runner",
+  "Mach Bike",
   "Standard Kart S",
   "Standard Kart M",
   "Standard Kart L",
@@ -102,8 +104,6 @@ const VEHICLES = [
   "Standard Bike M",
   "Standard Bike L",
   "Bullet Bike",
-  "Mach Bike",
-  "Flame Runner",
   "Bit Bike",
   "Sugarscoot",
   "Wario Bike",
