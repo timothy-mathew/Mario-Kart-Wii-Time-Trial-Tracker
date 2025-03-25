@@ -4,7 +4,8 @@ const auth = require('../middleware/auth');
 const { 
   getTimeTrials, 
   createTimeTrial, 
-  deleteTimeTrial 
+  deleteTimeTrial,
+  updateTimeTrial
 } = require('../controllers/timeTrialController');
 
 
@@ -16,6 +17,9 @@ router.get('/', getTimeTrials);
 
 // Create a new time trial
 router.post('/', createTimeTrial);
+
+// Update a time trial
+router.put('/:id', updateTimeTrial);
 
 // Delete a time trial
 router.delete('/:id', deleteTimeTrial);

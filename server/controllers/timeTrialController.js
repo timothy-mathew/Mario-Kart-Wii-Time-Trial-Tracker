@@ -49,3 +49,30 @@ exports.deleteTimeTrial = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Update a time trial
+exports.updateTimeTrial = async (req, res) => {
+  try {
+    const timeTrial = await TimeTrial.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId },
+      {
+        $set: {
+          trackName: req.body.trackName,
+          timeInMs: req.body.timeInMs,
+          character: req.body.character,
+          vehicle: req.body.vehicle,
+          date: req.body.date
+        }
+      },
+      { new: true }
+    );
+
+    if (!timeTrial) {
+      return res.status(404).json({ message: 'Time trial not found' });
+    }
+
+    res.json(timeTrial);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
