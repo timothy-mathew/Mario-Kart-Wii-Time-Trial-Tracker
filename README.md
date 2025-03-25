@@ -10,8 +10,8 @@ A [web application](https://mkwii-time-trialer.vercel.app/) for tracking Mario K
 - 🔐 Google OAuth authentication for secure user login
 
 🛠️ Tech Stack
-Frontend: React
-Backend: Node.js, Express, MongoDB (Atlas)
-Authentication: Google OAuth
-Deployment: Vercel (frontend), Render (backend)
+- Frontend: React
+- Backend: Node.js, Express, MongoDB (Atlas)
+- Authentication: Google OAuth
+- Deployment: Vercel (frontend), Render (backend)
 
